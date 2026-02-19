@@ -1,0 +1,277 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.2.13",
+    "lastTouchedAt": "2026-02-15T15:47:35.239Z"
+  },
+  "wizard": {
+    "lastRunAt": "2026-02-14T23:39:37.590Z",
+    "lastRunVersion": "2026.2.13",
+    "lastRunCommand": "doctor",
+    "lastRunMode": "local"
+  },
+  "browser": {
+    "executablePath": "/usr/bin/google-chrome",
+    "headless": true,
+    "noSandbox": true,
+    "defaultProfile": "openclaw"
+  },
+  "auth": {
+    "profiles": {
+      "google:default": {
+        "provider": "google",
+        "mode": "api_key"
+      },
+      "google:backup": {
+        "provider": "google",
+        "mode": "api_key"
+      },
+      "deepseek:default": {
+        "provider": "openai",
+        "mode": "api_key"
+      },
+      "minimax:default": {
+        "provider": "openai",
+        "mode": "api_key"
+      }
+    },
+    "order": {
+      "google": [
+        "google:default",
+        "google:backup"
+      ]
+    }
+  },
+  "models": {
+    "providers": {
+      "deepseek": {
+        "baseUrl": "https://api.deepseek.com",
+        "auth": "api-key",
+        "api": "openai-completions",
+        "authHeader": true,
+        "models": [
+          {
+            "id": "deepseek-chat",
+            "name": "DeepSeek V3",
+            "api": "openai-completions",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0.14,
+              "output": 0.28,
+              "cacheRead": 0.014,
+              "cacheWrite": 0
+            },
+            "contextWindow": 64000,
+            "maxTokens": 8192
+          },
+          {
+            "id": "deepseek-reasoner",
+            "name": "DeepSeek R1",
+            "api": "openai-completions",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0.55,
+              "output": 2.19,
+              "cacheRead": 0.055,
+              "cacheWrite": 0
+            },
+            "contextWindow": 64000,
+            "maxTokens": 8192
+          }
+        ]
+      },
+      "minimax": {
+        "baseUrl": "https://api.minimax.io/v1",
+        "auth": "api-key",
+        "api": "openai-completions",
+        "authHeader": true,
+        "models": [
+          {
+            "id": "abab6.5s-chat",
+            "name": "MiniMax abab6.5s",
+            "api": "openai-completions",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 245760,
+            "maxTokens": 4096
+          },
+          {
+            "id": "abab6.5g-chat",
+            "name": "MiniMax abab6.5g",
+            "api": "openai-completions",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 8192,
+            "maxTokens": 4096
+          },
+          {
+            "id": "MiniMax-M2.5",
+            "name": "MiniMax M2.5",
+            "api": "openai-completions",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 204800,
+            "maxTokens": 4096
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "google/gemini-3-pro-preview"
+      },
+      "models": {
+        "google/gemini-3-pro-preview": {
+          "alias": "gemini"
+        },
+        "deepseek/deepseek-chat": {
+          "alias": "deepseek"
+        },
+        "deepseek/deepseek-reasoner": {
+          "alias": "r1"
+        },
+        "minimax/abab6.5s-chat": {
+          "alias": "minimax"
+        },
+        "minimax/MiniMax-M2.5": {
+          "alias": "m2"
+        }
+      },
+      "workspace": "/root/.openclaw/workspace",
+      "memorySearch": {
+        "enabled": true,
+        "sources": [
+          "memory",
+          "sessions"
+        ],
+        "provider": "gemini",
+        "model": "text-embedding-004"
+      },
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      }
+    }
+  },
+  "tools": {
+    "web": {
+      "search": {
+        "enabled": true,
+        "provider": "perplexity",
+        "apiKey": "${PERPLEXITY_API_KEY}",
+        "perplexity": {
+          "model": "perplexity/sonar-pro"
+        }
+      }
+    }
+  },
+  "messages": {
+    "ackReactionScope": "all"
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto"
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "pairing",
+      "botToken": "${TELEGRAM_BOT_TOKEN}",
+      "groupPolicy": "allowlist",
+      "streamMode": "partial",
+      "groups": {
+        "*": {
+          "requireMention": false
+        }
+      }
+    },
+    "dingtalk": {
+      "enabled": true,
+      "clientId": "${DINGTALK_CLIENT_ID}",
+      "clientSecret": "${DINGTALK_CLIENT_SECRET}",
+      "robotCode": "${DINGTALK_ROBOT_CODE}",
+      "corpId": "${DINGTALK_CORP_ID}",
+      "agentId": "${DINGTALK_AGENT_ID}",
+      "dmPolicy": "open",
+      "groupPolicy": "open",
+      "messageType": "card",
+      "cardTemplateId": "8a7c21c2-0773-4f98-a94d-979955913d2d.schema",
+      "cardTemplateKey": "content",
+      "debug": false
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "controlUi": {
+      "allowInsecureAuth": true,
+      "dangerouslyDisableDeviceAuth": true
+    },
+    "auth": {
+      "token": "${OPENCLAW_GATEWAY_TOKEN}"
+    }
+  },
+  "skills": {
+    "install": {
+      "nodeManager": "pnpm"
+    },
+    "entries": {
+      "nano-banana-pro": {
+        "apiKey": "${NANO_BANANA_API_KEY}"
+      }
+    }
+  },
+  "plugins": {
+    "entries": {
+      "telegram": {
+        "enabled": true
+      },
+      "dingtalk": {
+        "enabled": true
+      }
+    },
+    "installs": {
+      "dingtalk": {
+        "source": "npm",
+        "spec": "https://github.com/soimy/clawdbot-channel-dingtalk.git",
+        "installPath": "/root/.openclaw/extensions/dingtalk",
+        "version": "2.5.1",
+        "installedAt": "2026-02-14T11:42:51.050Z"
+      }
+    }
+  }
+}
